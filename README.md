@@ -23,6 +23,15 @@ brew "<formula>"
 | `jetpks/tap/space-architect` | `architect` | Architect Loop: structured judgment-and-build cycles for humans and AI builders |
 | `jetpks/tap/repo-tender` | `repo-tender`, `src` | Keep your local git clones forever evergreen — clean, on default branch, fetched |
 
+## Platform support
+
+Bottled platforms: **macOS arm64 (Apple Silicon)** and **Linux x86_64** —
+these install instantly from bottles.
+
+macOS Intel (x86_64) is not bottled and not tested; `brew install` there
+falls back to building from source against Homebrew's Ruby. It may work,
+but it is unsupported.
+
 ## Install
 
 ```sh
