@@ -5,6 +5,12 @@ class SpaceCadet < Formula
   sha256 "01d66112f3c03cbca59e70c7937e0eff4a7e1f49b2c023ec7eb70f6d324fbb24"
   license "MIT"
 
+  bottle do
+    root_url "https://github.com/jetpks/homebrew-tap/releases/download/space-cadet-9.2.0"
+    sha256 cellar: :any, arm64_tahoe:  "fc67927d3aee4cfafd411e622935af945b4607c45cc932871600fd9450a024ec"
+    sha256 cellar: :any, x86_64_linux: "5a9c0451b8079526049348ad193d2a9000d08e10e92761b8ee50d82182b0239d"
+  end
+
   depends_on "ruby"
 
   def install
