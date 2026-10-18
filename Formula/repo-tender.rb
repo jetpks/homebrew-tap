@@ -5,6 +5,12 @@ class RepoTender < Formula
   sha256 "a13a27d9415bedebf4fcd92e4f4354d9e34ec39f7ebf5bb9563d321ce6f69a25"
   license "MIT"
 
+  bottle do
+    root_url "https://github.com/jetpks/homebrew-tap/releases/download/repo-tender-1.0.0"
+    sha256 cellar: :any, arm64_tahoe:  "558924bc342a96c6a9f77e56946ee0d517351c1a5981937d4dcd055947bdb61c"
+    sha256 cellar: :any, x86_64_linux: "f27c6029c6a76848e34695b96f2dac02b2da62f9ce23c7fd02089dabc7768499"
+  end
+
   depends_on "gh"
   depends_on "ruby"
 
