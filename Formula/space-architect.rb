@@ -5,6 +5,12 @@ class SpaceArchitect < Formula
   sha256 "16dcb0888cac134f82608e5991a78f875c59c97875aa17cfb519a5cf356db03a"
   license "MIT"
 
+  bottle do
+    root_url "https://github.com/jetpks/homebrew-tap/releases/download/space-architect-9.5.0"
+    sha256 cellar: :any, arm64_tahoe:  "000fbd3386140761a9ec19e02cbedc72a457fcf1312ca97bf7d9ba2e06e69a50"
+    sha256 cellar: :any, x86_64_linux: "4c3451b6676ced62352cdad00cff7600266a157b9fdca3f562f5498f1dce4cc6"
+  end
+
   depends_on "ruby"
   depends_on "space-cadet"
 
