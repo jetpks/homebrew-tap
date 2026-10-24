@@ -4,6 +4,7 @@ class SpaceCadet < Formula
   url "https://rubygems.org/downloads/space-cadet-9.2.0.gem"
   sha256 "01d66112f3c03cbca59e70c7937e0eff4a7e1f49b2c023ec7eb70f6d324fbb24"
   license "MIT"
+  revision 1
 
   bottle do
     root_url "https://github.com/jetpks/homebrew-tap/releases/download/space-cadet-9.2.0"
@@ -27,6 +28,34 @@ class SpaceCadet < Formula
     # absolute brew-ruby shebang is the interpreter pin, and the user's PATH
     # flows through for subprocesses (git, gh).
     bin.env_script_all_files libexec/"bin", GEM_HOME: ENV.fetch("GEM_HOME")
+  end
+
+  # Bottled native extensions (io-event, json) are keyed to the BUILD
+  # machine's Ruby platform (libexec/extensions/arm64-darwin-25). RubyGems
+  # only activates a native gem when gem.build_complete exists under the
+  # LOCAL Ruby's platform dir (Gem::Specification#ignored? ==
+  # missing_extensions?), and Homebrew rebuilds its ruby bottle on newer
+  # macOS runners (arm64-darwin-27) as new macOS ships. Link the shipped
+  # build to the path the pouring machine's Ruby expects. No-op when the
+  # vintages already agree (source builds, same-runner pours).
+  def post_install
+    system({ "GEM_HOME" => libexec.to_s, "GEM_PATH" => libexec.to_s },
+           Formula["ruby"].opt_bin/"ruby", "-e", <<~'RUBY')
+      require "fileutils"
+      vendored = Dir.glob(File.join(Gem.dir, "extensions", "*", "*", "*"))
+      Gem::Specification.each do |spec|
+        next if spec.extensions.empty?
+        next unless spec.base_dir == Gem.dir # only this formula's vendored tree
+        marker = spec.gem_build_complete_path
+        next if File.exist?(marker)
+        shipped = vendored.find { |d| File.basename(d) == spec.full_name }
+        next unless shipped
+        expected = File.dirname(marker)            # .../<platform>/<abi>/<gem>
+        FileUtils.mkdir_p(File.dirname(expected))  # .../<platform>/<abi>
+        FileUtils.rm_rf(expected)
+        FileUtils.ln_s(shipped, expected)
+      end
+    RUBY
   end
 
   test do

@@ -54,6 +54,18 @@ class TapCheck
     "bin.env_script_all_files",
   ].freeze
 
+  # Substrings every formula's post_install block must contain: bottled
+  # native extensions are built under the CI Ruby's platform dir; RubyGems
+  # refuses to activate a native gem unless the local Ruby's platform dir
+  # carries gem.build_complete, so each formula links shipped builds to the
+  # pouring machine's expected path at post_install (runs on bottle pour).
+  POST_INSTALL_KEYS = [
+    "def post_install",
+    "Formula[\"ruby\"].opt_bin/\"ruby\"",
+    "spec.gem_build_complete_path",
+    "FileUtils.ln_s(shipped, expected)",
+  ].freeze
+
   # Substrings no formula's install block may contain: capturing the build-time
   # PATH embeds Homebrew's shims dir into the installed wrapper, and wildcard
   # binstub installs link dependency gems' executables into brew's bin (brew
@@ -144,6 +156,9 @@ class TapCheck
         missing = VERSION_KEYS.reject { |key| test_block.include?(key) }
         check "#{name}: test block", missing.empty?, "missing #{missing.inspect}"
       end
+
+      missing = POST_INSTALL_KEYS.reject { |key| src.include?(key) }
+      check "#{name}: post_install pattern", missing.empty?, "missing #{missing.inspect}"
 
       violations = desc_violations(expected[:desc])
       check "#{name}: desc brew rules", violations.empty?, violations.join("; ")
