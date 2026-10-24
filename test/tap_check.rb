@@ -60,8 +60,8 @@ class TapCheck
   # carries gem.build_complete, so each formula links shipped builds to the
   # pouring machine's expected path at post_install (runs on bottle pour).
   POST_INSTALL_KEYS = [
-    "def post_install",
-    "Formula[\"ruby\"].opt_bin/\"ruby\"",
+    "post_install_steps do",
+    "run \"{{HOMEBREW_PREFIX}}/opt/ruby/bin/ruby\"",
     "spec.gem_build_complete_path",
     "FileUtils.ln_s(shipped, expected)",
   ].freeze

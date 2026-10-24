@@ -31,15 +31,19 @@ class RepoTender < Formula
     bin.env_script_all_files libexec/"bin", GEM_HOME: ENV.fetch("GEM_HOME")
   end
 
-  # Bottled native extensions are keyed to the BUILD machine's Ruby platform
-  # (libexec/extensions/arm64-darwin-25); RubyGems only activates a native gem
-  # when gem.build_complete exists under the LOCAL Ruby's platform dir
-  # (Gem::Specification#ignored? == missing_extensions?), and Homebrew rebuilds
-  # its ruby bottle on newer macOS runners as new macOS ships. Link the shipped
-  # build to the path the pouring machine's Ruby expects; see space-cadet.
-  def post_install
-    system({ "GEM_HOME" => libexec.to_s, "GEM_PATH" => libexec.to_s },
-           Formula["ruby"].opt_bin/"ruby", "-e", <<~'RUBY')
+  # Bottled native extensions (io-event, json) are keyed to the BUILD
+  # machine's Ruby platform (libexec/extensions/arm64-darwin-25). RubyGems
+  # only activates a native gem when gem.build_complete exists under the
+  # LOCAL Ruby's platform dir (Gem::Specification#ignored? is
+  # missing_extensions?), and Homebrew rebuilds its ruby bottle on newer
+  # macOS runners as new macOS ships. Link the shipped build to the path the
+  # pouring machine's Ruby expects. No-op when vintages already agree
+  # (source builds, same-runner pours). Steps are declarative (Homebrew 7):
+  # the block evaluates at formula load, so paths must be {{tokens}} and the
+  # command is the brew ruby itself — the only authority on where RubyGems
+  # expects extensions.
+  post_install_steps do
+    script = <<~RUBY
       require "fileutils"
       vendored = Dir.glob(File.join(Gem.dir, "extensions", "*", "*", "*"))
       Gem::Specification.each do |spec|
@@ -55,6 +59,9 @@ class RepoTender < Formula
         FileUtils.ln_s(shipped, expected)
       end
     RUBY
+    run "{{HOMEBREW_PREFIX}}/opt/ruby/bin/ruby",
+        args: ["-e", script],
+        env: { "GEM_HOME" => "{{libexec}}", "GEM_PATH" => "{{libexec}}" }
   end
 
   test do
