@@ -7,9 +7,9 @@ class SpaceCadet < Formula
   revision 1
 
   bottle do
-    root_url "https://github.com/jetpks/homebrew-tap/releases/download/space-cadet-9.2.0"
-    sha256 cellar: :any, arm64_tahoe:  "fc67927d3aee4cfafd411e622935af945b4607c45cc932871600fd9450a024ec"
-    sha256 cellar: :any, x86_64_linux: "5a9c0451b8079526049348ad193d2a9000d08e10e92761b8ee50d82182b0239d"
+    root_url "https://github.com/jetpks/homebrew-tap/releases/download/space-cadet-9.2.0_1"
+    sha256 cellar: :any, arm64_tahoe:  "1b9fb0b1a9b42cb7de87b93ab9299873617f3dda33544c33f17c1932f042a162"
+    sha256 cellar: :any, x86_64_linux: "fc426e48e7a80b4a9d84b04331bf6747802f4505b30e9996dfaf1b47385b870a"
   end
 
   depends_on "ruby"
