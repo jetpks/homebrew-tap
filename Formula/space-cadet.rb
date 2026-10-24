@@ -42,24 +42,23 @@ class SpaceCadet < Formula
   # command is the brew ruby itself — the only authority on where RubyGems
   # expects extensions.
   post_install_steps do
-    script = <<~RUBY
-      require "fileutils"
-      vendored = Dir.glob(File.join(Gem.dir, "extensions", "*", "*", "*"))
-      Gem::Specification.each do |spec|
-        next if spec.extensions.empty?
-        next unless spec.base_dir == Gem.dir # only this formula's vendored tree
-        marker = spec.gem_build_complete_path
-        next if File.exist?(marker)
-        shipped = vendored.find { |d| File.basename(d) == spec.full_name }
-        next unless shipped
-        expected = File.dirname(marker)            # .../<platform>/<abi>/<gem>
-        FileUtils.mkdir_p(File.dirname(expected))  # .../<platform>/<abi>
-        FileUtils.rm_rf(expected)
-        FileUtils.ln_s(shipped, expected)
-      end
-    RUBY
     run "{{HOMEBREW_PREFIX}}/opt/ruby/bin/ruby",
-        args: ["-e", script],
+        args: ["-e", <<~RUBY],
+          require "fileutils"
+          vendored = Dir.glob(File.join(Gem.dir, "extensions", "*", "*", "*"))
+          Gem::Specification.each do |spec|
+            next if spec.extensions.empty?
+            next unless spec.base_dir == Gem.dir # only this formula's tree
+            marker = spec.gem_build_complete_path
+            next if File.exist?(marker)
+            shipped = vendored.find { |d| File.basename(d) == spec.full_name }
+            next unless shipped
+            expected = File.dirname(marker)
+            FileUtils.mkdir_p(File.dirname(expected))
+            FileUtils.rm_rf(expected)
+            FileUtils.ln_s(shipped, expected)
+          end
+        RUBY
         env: { "GEM_HOME" => "{{libexec}}", "GEM_PATH" => "{{libexec}}" }
   end
 
