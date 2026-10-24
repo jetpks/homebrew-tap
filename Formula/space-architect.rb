@@ -7,9 +7,9 @@ class SpaceArchitect < Formula
   revision 1
 
   bottle do
-    root_url "https://github.com/jetpks/homebrew-tap/releases/download/space-architect-9.5.0"
-    sha256 cellar: :any, arm64_tahoe:  "000fbd3386140761a9ec19e02cbedc72a457fcf1312ca97bf7d9ba2e06e69a50"
-    sha256 cellar: :any, x86_64_linux: "4c3451b6676ced62352cdad00cff7600266a157b9fdca3f562f5498f1dce4cc6"
+    root_url "https://github.com/jetpks/homebrew-tap/releases/download/space-architect-9.5.0_1"
+    sha256 cellar: :any, arm64_tahoe:  "f4c9c8c1d997d9956dfa2d905b28349e26d12a5ef088ed0fd77c127c110e6bfa"
+    sha256 cellar: :any, x86_64_linux: "f30384f8db96a2dc58f2facbc297b4f880143dd103e8393687ea473a9edb2450"
   end
 
   depends_on "ruby"
