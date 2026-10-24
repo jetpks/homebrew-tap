@@ -60,7 +60,7 @@ class RepoTender < Formula
             FileUtils.ln_s(shipped, expected)
           end
         RUBY
-        env: { "GEM_HOME" => "{{libexec}}", "GEM_PATH" => "{{libexec}}" }
+        env:  { "GEM_HOME" => "{{libexec}}", "GEM_PATH" => "{{libexec}}" }
   end
 
   test do
