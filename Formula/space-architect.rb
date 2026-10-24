@@ -63,8 +63,8 @@ class SpaceArchitect < Formula
             FileUtils.ln_s(shipped, expected)
           end
         RUBY
-        env: { "GEM_HOME" => "{{libexec}}",
-               "GEM_PATH" => "{{HOMEBREW_PREFIX}}/opt/space-cadet/libexec:{{libexec}}" }
+        env:  { "GEM_HOME" => "{{libexec}}",
+                "GEM_PATH" => "{{HOMEBREW_PREFIX}}/opt/space-cadet/libexec:{{libexec}}" }
   end
 
   test do
