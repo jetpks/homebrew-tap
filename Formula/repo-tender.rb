@@ -7,9 +7,9 @@ class RepoTender < Formula
   revision 1
 
   bottle do
-    root_url "https://github.com/jetpks/homebrew-tap/releases/download/repo-tender-1.0.0"
-    sha256 cellar: :any, arm64_tahoe:  "558924bc342a96c6a9f77e56946ee0d517351c1a5981937d4dcd055947bdb61c"
-    sha256 cellar: :any, x86_64_linux: "f27c6029c6a76848e34695b96f2dac02b2da62f9ce23c7fd02089dabc7768499"
+    root_url "https://github.com/jetpks/homebrew-tap/releases/download/repo-tender-1.0.0_1"
+    sha256 cellar: :any, arm64_tahoe:  "60d2e9185f588940c3a80f6180cc68e245e6a11e89259524f2e74b35279d44ff"
+    sha256 cellar: :any, x86_64_linux: "ee199b9b34cd5ab402956c53769e2aeaf4fb94b9d52944fa98a46b4954159370"
   end
 
   depends_on "gh"
